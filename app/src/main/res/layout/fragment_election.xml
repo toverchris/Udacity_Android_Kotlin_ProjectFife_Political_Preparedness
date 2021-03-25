@@ -19,6 +19,9 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:text="@string/upcoming_elections"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -26,10 +29,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_upcomingElections"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="310dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_upcomingElections">
+            app:layout_constraintTop_toBottomOf="@+id/textView_upcomingElections"
+            tools:itemCount="5"
+            app:spanCount="1"
+            tools:listitem="@layout/list_view_item"
+            app:listData= "@{viewModel.upcomingElectionsList}">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -38,6 +45,9 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:text="@string/saved_elections"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,10 +56,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_savedElections"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="310dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_savedElections" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_savedElections"
+            tools:itemCount="5"
+            app:spanCount="1"
+            tools:listitem="@layout/list_view_item"/>
+<!--            app:listData= "@{viewModel.savedElectionsList}"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
