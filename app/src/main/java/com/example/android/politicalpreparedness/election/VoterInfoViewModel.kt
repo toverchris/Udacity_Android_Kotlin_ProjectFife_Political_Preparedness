@@ -54,13 +54,16 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
 
     fun getVoterInfoFromApi(division : Division, electionID : Int){
 
-        var address = "Michigan"
-        if(division.state.isNotEmpty()) {
-            address = division.state
-        }
-
         coroutineScope.launch {
             try {
+                var address : String
+                when(division.state){
+                    // TODO: 4/9/21 update this list if some state is not know (like ga for georgia) 
+                    ""      -> address = "Michigan"
+                    "ga"    -> address = "georgia"
+                    else    -> address = division.state
+                }
+
                 CivicsApi.retrofitService.getVoterInfo(address,electionID)
                         .enqueue(object : retrofit2.Callback<VoterInfoResponse> {
                             override fun onResponse(call: Call<VoterInfoResponse>, response: Response<VoterInfoResponse>) {
@@ -70,7 +73,6 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
                             override fun onFailure(call: Call<VoterInfoResponse>, t: Throwable) {
                                 Log.i("Download Failure", t.message.toString())
                             }
-
                         })
             }catch (e: Exception) {
                 Log.i("Download Failure", e.message.toString())
