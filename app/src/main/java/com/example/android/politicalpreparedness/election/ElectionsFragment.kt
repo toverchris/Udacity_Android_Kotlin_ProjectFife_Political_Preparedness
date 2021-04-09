@@ -44,7 +44,6 @@ class ElectionsFragment: Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = _viewModel
 
-
         //TODO: Initiate recycler adapters
         binding.recyclerViewUpcomingElections.adapter = ElectionListAdapter(ElectionListAdapter.ElectionListener{
             Log.i("ElectionFragment", "new upcoming election name ${it.name}")
@@ -74,7 +73,7 @@ class ElectionsFragment: Fragment() {
     //TODO: Refresh adapters when fragment loads
 
     private fun navToVoterInfo() {
-        this.findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(_viewModel.navigateToSelectedElection.value!!.id, _viewModel.navigateToSelectedElection.value!!.division ))
+        this.findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(_viewModel.navigateToSelectedElection.value!!.id,_viewModel.navigateToSelectedElection.value!!.name,_viewModel.navigateToSelectedElection.value!!.electionDay,_viewModel.navigateToSelectedElection.value!!.division ))
     }
 
 }
