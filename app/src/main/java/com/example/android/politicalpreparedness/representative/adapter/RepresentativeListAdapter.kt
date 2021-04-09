@@ -1,4 +1,3 @@
-/*
 package com.example.android.politicalpreparedness.representative.adapter
 
 import android.content.Intent
@@ -12,16 +11,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.politicalpreparedness.R
-import com.example.android.politicalpreparedness.databinding.ListViewItemBinding
-import com.example.android.politicalpreparedness.databinding.ViewholderRepresentativeBinding
+import com.example.android.politicalpreparedness.databinding.RepresentativeListViewItemBinding
 import com.example.android.politicalpreparedness.network.models.Channel
-import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.representative.model.Representative
 
 class RepresentativeListAdapter: ListAdapter<Representative, RepresentativeViewHolder>(RepresentativeDiffCallback()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepresentativeViewHolder {
-        return  RepresentativeViewHolder(ListViewItemBinding.inflate(LayoutInflater.from(parent.context))) //RepresentativeViewHolder.from(parent)
+        return RepresentativeViewHolder(RepresentativeListViewItemBinding.inflate(LayoutInflater.from(parent.context))) //RepresentativeViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: RepresentativeViewHolder, position: Int) {
@@ -30,14 +27,17 @@ class RepresentativeListAdapter: ListAdapter<Representative, RepresentativeViewH
     }
 }
 
-class RepresentativeViewHolder(val binding: ViewholderRepresentativeBinding): RecyclerView.ViewHolder(binding.root) {
+
+class RepresentativeViewHolder(val binding: RepresentativeListViewItemBinding): RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Representative) {
         binding.representative = item
         binding.representativePhoto.setImageResource(R.drawable.ic_profile)
 
         //TODO: Show social links ** Hint: Use provided helper methods
+        showSocialLinks(item.official.channels!!)
         //TODO: Show www link ** Hint: Use provided helper methods
+        showWWWLinks(item.official.urls!!)
 
         binding.executePendingBindings()
     }
@@ -55,6 +55,7 @@ class RepresentativeViewHolder(val binding: ViewholderRepresentativeBinding): Re
     private fun showWWWLinks(urls: List<String>) {
         enableLink(binding.wwwIcon, urls.first())
     }
+
 
     private fun getFacebookUrl(channels: List<Channel>): String? {
         return channels.filter { channel -> channel.type == "Facebook" }
@@ -82,16 +83,16 @@ class RepresentativeViewHolder(val binding: ViewholderRepresentativeBinding): Re
 }
 
 //TODO: Create RepresentativeDiffCallback
-class RepresentativeDiffCallback : DiffUtil.ItemCallback<Election>(){
-    override fun areItemsTheSame(oldItem: Election, newItem: Election): Boolean {
+class RepresentativeDiffCallback : DiffUtil.ItemCallback<Representative>(){
+    override fun areItemsTheSame(oldItem: Representative, newItem: Representative): Boolean {
         return oldItem === newItem
     }
-    override fun areContentsTheSame(oldItem: Election, newItem: Election): Boolean {
-        return oldItem.id == newItem.id
+    override fun areContentsTheSame(oldItem: Representative, newItem: Representative): Boolean {
+        return oldItem.office == newItem.office
     }
 }
 
 //TODO: Create RepresentativeListener
 class RepresentativeListener(val clickListener: (representative:Representative)-> Unit){
     fun onClick(representative:Representative)= clickListener(representative)
-}*/
+}
