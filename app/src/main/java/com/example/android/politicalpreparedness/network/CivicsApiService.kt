@@ -13,6 +13,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -65,7 +66,10 @@ interface CivicsApiService {
     fun getElections(): Call<ElectionResponse>
 
     @GET("voterinfo")
-    fun getVoterInfo(): Call<VoterInfoResponse>
+    fun getVoterInfo(
+            @Query("address") address : String,
+            @Query("electionId") electionId : Int
+    ): Call<VoterInfoResponse>
 
     @GET("representatives")
     fun getRepresentatives(): Call<RepresentativeResponse>
