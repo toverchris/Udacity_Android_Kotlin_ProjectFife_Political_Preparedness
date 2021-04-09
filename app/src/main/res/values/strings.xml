@@ -9,4 +9,6 @@
     <string name="button_location">Use my location</string>
     <string name="representative_search">Representative Search</string>
     <string name="my_representatives">My Representatives</string>
+    <string name="follow_election">Follow election</string>
+    <string name="unfollow_election">Unfollow election</string>
 </resources>
