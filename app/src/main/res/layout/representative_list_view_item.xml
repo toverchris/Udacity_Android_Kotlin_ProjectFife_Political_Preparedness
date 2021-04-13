@@ -27,6 +27,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:profileImage="@{representative.official.photoUrl}"
             app:srcCompat="@drawable/ic_profile" />
 
         <ImageView
@@ -65,7 +66,7 @@
             android:layout_marginStart="16dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:text="President of the United States"
+            android:text="@{representative.office.name}"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -80,7 +81,7 @@
             android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:text="Donald Trump"
+            android:text="@{representative.official.name}"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@+id/textView_officeName"
@@ -94,7 +95,7 @@
             android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:text="Republican Party"
+            android:text="@{representative.official.party}"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@+id/textView_officialName"
