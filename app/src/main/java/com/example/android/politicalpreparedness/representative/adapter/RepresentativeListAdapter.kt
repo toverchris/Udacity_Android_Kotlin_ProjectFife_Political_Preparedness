@@ -35,9 +35,9 @@ class RepresentativeViewHolder(val binding: RepresentativeListViewItemBinding): 
         binding.representativePhoto.setImageResource(R.drawable.ic_profile)
 
         //TODO: Show social links ** Hint: Use provided helper methods
-        //showSocialLinks(item.official.channels!!)
+        item.official.channels?.let { showSocialLinks(it) }
         //TODO: Show www link ** Hint: Use provided helper methods
-        //showWWWLinks(item.official.urls!!)
+        item.official.urls?.let { showWWWLinks(it) }
 
         binding.executePendingBindings()
     }
