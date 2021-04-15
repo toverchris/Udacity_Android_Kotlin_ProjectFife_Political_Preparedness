@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.android.politicalpreparedness.network.models.Election
+import kotlinx.coroutines.InternalCoroutinesApi
 
 @Database(entities = [Election::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
@@ -18,6 +19,7 @@ abstract class ElectionDatabase: RoomDatabase() {
         @Volatile
         private var INSTANCE: ElectionDatabase? = null
 
+        @InternalCoroutinesApi
         fun getInstance(context: Context): ElectionDatabase {
             synchronized(this) {
                 var instance = INSTANCE
@@ -27,6 +29,7 @@ abstract class ElectionDatabase: RoomDatabase() {
                             ElectionDatabase::class.java,
                             "election_database"
                     )
+                            .allowMainThreadQueries()               // TODO: 4/15/21 That has to be gone due to bad programming on the main threat. Just for help now 
                             .fallbackToDestructiveMigration()
                             .build()
 

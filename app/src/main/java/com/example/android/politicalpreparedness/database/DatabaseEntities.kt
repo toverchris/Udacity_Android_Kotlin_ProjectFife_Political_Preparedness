@@ -1,3 +1,4 @@
+/*
 package com.example.android.politicalpreparedness.database
 
 import androidx.room.Entity
@@ -35,4 +36,4 @@ fun List<Election>.asDatabaseModel(): Array<DatabaseElection> {
                 division = it.division
         )
     }.toTypedArray()
-}
+}*/

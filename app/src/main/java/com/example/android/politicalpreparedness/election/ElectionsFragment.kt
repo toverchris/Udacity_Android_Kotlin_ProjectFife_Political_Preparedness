@@ -27,12 +27,17 @@ import kotlinx.coroutines.InternalCoroutinesApi
 class ElectionsFragment: Fragment() {
 
     //TODO: Declare ViewModel
+    @InternalCoroutinesApi
     private val _viewModel: ElectionsViewModel by lazy {
-        ViewModelProviders.of(this, ElectionsViewModelFactory())
+        val activity = requireNotNull(this.activity) {
+            "You can only access the viewModel after onActivityCreated()"
+        }
+        ViewModelProviders.of(this, ElectionsViewModelFactory(activity.application))
                 .get(ElectionsViewModel::class.java)
     }
 
 
+    @InternalCoroutinesApi
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -72,6 +77,7 @@ class ElectionsFragment: Fragment() {
 
     //TODO: Refresh adapters when fragment loads
 
+    @InternalCoroutinesApi
     private fun navToVoterInfo() {
         this.findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(_viewModel.navigateToSelectedElection.value!!.id,_viewModel.navigateToSelectedElection.value!!.division ))
     }

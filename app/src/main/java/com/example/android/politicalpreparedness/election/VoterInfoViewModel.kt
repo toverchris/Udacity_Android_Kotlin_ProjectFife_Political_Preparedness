@@ -16,10 +16,7 @@ import com.example.android.politicalpreparedness.network.models.Division
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.ElectionResponse
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Response
 import java.util.*
@@ -36,7 +33,6 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
         get() = _voterInfo
 
     //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
-    private val database = ElectionDatabase.getInstance(application)
 
     private  val _upcomingElectionsFromApi = MutableLiveData<List<Election>>()
     val upcomingElectionsFromApi: LiveData<List<Election>>
@@ -84,7 +80,7 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
     }
 
     private fun populateSavedElectionsfromDatabase() {
-        _savedElectionsFromDatabase.value = listOf(Election(88888, "VIP Test 999", Date(2022 - 1900, 1, 24), Division("123", "Sagres", "Portugal")))
+        //_savedElectionsFromDatabase.value = listOf(Election(88888, "VIP Test 999", Date(2022 - 1900, 1, 24), Division("123", "Sagres", "Portugal")))
     }
 
     //TODO: Add var and methods to populate voter info
