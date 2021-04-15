@@ -82,4 +82,9 @@ class ElectionsFragment: Fragment() {
         this.findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(_viewModel.navigateToSelectedElection.value!!.id,_viewModel.navigateToSelectedElection.value!!.division ))
     }
 
+    @InternalCoroutinesApi
+    override fun onResume() {
+        super.onResume()
+        _viewModel.getElectionsDataFromDatabase()
+    }
 }
