@@ -1,28 +1,30 @@
 package com.example.android.politicalpreparedness.election
 
 import android.app.Application
-import android.content.res.Resources
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.android.politicalpreparedness.MainActivity
-import com.example.android.politicalpreparedness.R
-import com.example.android.politicalpreparedness.database.ElectionDao
 import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.models.Division
 import com.example.android.politicalpreparedness.network.models.Election
-import com.example.android.politicalpreparedness.network.models.ElectionResponse
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Response
 import java.util.*
-import kotlin.coroutines.coroutineContext
+
 
 class VoterInfoViewModel(application: Application) : ViewModel() {
+
+    private val context = application.applicationContext
 
     //TODO: Add live data to hold voter info
     private var viewModelJob = Job()
@@ -50,24 +52,25 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
         populateUpcomingElectionsfromApi()
     }
 
-    fun getVoterInfoFromApi(division : Division, electionID : Int){
+    fun getVoterInfoFromApi(division: Division, electionID: Int){
 
         coroutineScope.launch {
             try {
                 var address : String
                 when(division.state){
                     // update this list if some state is not know (like ga for georgia or an empty string)
-                    ""      -> address = "Michigan"
-                    "ga"    -> address = "georgia"
+                    "" -> address = "Michigan"
+                    "ga" -> address = "georgia"
                     else    -> address = division.state
                 }
 
-                CivicsApi.retrofitService.getVoterInfo(address,electionID)
+                CivicsApi.retrofitService.getVoterInfo(address, electionID)
                         .enqueue(object : retrofit2.Callback<VoterInfoResponse> {
                             override fun onResponse(call: Call<VoterInfoResponse>, response: Response<VoterInfoResponse>) {
                                 Log.i("Download Success", response.body().toString())
                                 _voterInfo.value = response.body()!!
                             }
+
                             override fun onFailure(call: Call<VoterInfoResponse>, t: Throwable) {
                                 Log.i("Download Failure", t.message.toString())
                             }
@@ -86,13 +89,61 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
     }
 
     //TODO: Add var and methods to populate voter info
-    fun populateVoterInfo(id: Int, name: String, date: Date , division: Division){
+    fun populateVoterInfo(id: Int, name: String, date: Date, division: Division){
         //_voterInfo.value = Election(id,name,date,division)
     }
 
     //TODO: Add var and methods to support loading URLs
+    fun loadAddressURL(){
+        val loadURL = _voterInfo.value?.state?.get(0)?.electionAdministrationBody?.electionInfoUrl
+        Log.i("Load address url", loadURL.toString())
+        if(!loadURL.isNullOrEmpty()){
+            try {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(loadURL)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(context, "No application can handle this request."
+                        + " Please install a webbrowser", Toast.LENGTH_LONG).show()
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun loadBallotInfoURL(){
+        val loadURL = _voterInfo.value?.state?.get(0)?.electionAdministrationBody?.ballotInfoUrl
+        Log.i("Load ballot url", loadURL.toString())
+        if(!loadURL.isNullOrEmpty()){
+            try {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(loadURL)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(context, "No application can handle this request."
+                        + " Please install a webbrowser", Toast.LENGTH_LONG).show()
+                e.printStackTrace()
+            }
+        }
+    }
 
     //TODO: Add var and methods to save and remove elections to local database
+    @InternalCoroutinesApi
+    fun saveToDatabase(){
+        voterInfo.value?.let { database.electionDao.insert(it.election) }
+        Log.i("saved to database", _voterInfo.value!!.election.toString())
+    }
+    @InternalCoroutinesApi
+    fun removeFromDatabase(){
+        voterInfo.value?.let { database.electionDao.delete(it.election) }
+        Log.i("removed from database", _voterInfo.value!!.election.toString())
+    }
+
+    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
+    /**
+     * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
+     */
     fun updateButtonText(value: String): String{
         if(value == "Follow election"){
             return "Unfollow election"
@@ -101,22 +152,5 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
             return "Follow election"
         }
     }
-
-    @InternalCoroutinesApi
-    fun saveToDatabase(){
-        voterInfo.value?.let { database.electionDao.insert(it.election) }
-        Log.i("saved to database", _savedElectionsFromDatabase.value.toString())
-    }
-    @InternalCoroutinesApi
-    fun removeFromDatabase(){
-        voterInfo.value?.let { database.electionDao.delete(it.election) }
-        Log.i("removed from database", _savedElectionsFromDatabase.value.toString())
-    }
-
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
-
-    /**
-     * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
-     */
 
 }

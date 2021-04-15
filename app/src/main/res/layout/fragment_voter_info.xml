@@ -39,10 +39,12 @@
             android:id="@+id/state_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="20sp"
+            android:text="Election Information"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/election_date"
             app:layout_constraintStart_toStartOf="@id/election_date" />
-
-        <!-- TODO: Add click binding to open web URL -->
+        
         <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/state_locations"
@@ -50,12 +52,13 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:linksClickable="true"
+            android:paddingTop="5dp"
             android:textColorLink="@color/colorPrimaryDark"
-            android:text="@{viewModel.voterInfo.state.get(0).electionAdministrationBody.electionInfoUrl}"
+            android:onClick="@{() -> viewModel.loadAddressURL()}"
+            android:text="Voting Locations"
             app:layout_constraintTop_toBottomOf="@id/state_header"
             app:layout_constraintStart_toStartOf="@id/election_date" />
 
-        <!-- TODO: Add click binding to open web URL -->
         <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/state_ballot"
@@ -63,8 +66,10 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:linksClickable="true"
+            android:paddingTop="5dp"
             android:textColorLink="@color/colorPrimaryDark"
-            android:text="@{viewModel.voterInfo.state.get(0).electionAdministrationBody.ballotInfoUrl}"
+            android:onClick="@{() -> viewModel.loadBallotInfoURL()}"
+            android:text="Ballot Information"
             app:layout_constraintTop_toBottomOf="@id/state_locations"
             app:layout_constraintStart_toStartOf="@id/election_date" />
 
