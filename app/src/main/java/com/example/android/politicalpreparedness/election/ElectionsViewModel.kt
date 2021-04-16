@@ -61,8 +61,14 @@ class ElectionsViewModel(application: Application): ViewModel() {
                 CivicsApi.retrofitService.getElections()
                         .enqueue(object : retrofit2.Callback<ElectionResponse> {
                             override fun onResponse(call: Call<ElectionResponse>, response: Response<ElectionResponse>) {
-                                Log.i("Download Success", response.body().toString())
-                                _upcomingElectionsList.value = response.body()!!.elections
+                                if(response.body()!=null){
+                                    Log.i("Download Success", response.body().toString())
+                                    _upcomingElectionsList.value = response.body()!!.elections
+                                }else{
+                                    Log.e("ElectionsDataFromApi", "Add your personal API key in the CivicsHttpClient class")
+                                    _upcomingElectionsList.value = listOf(Election(0,"Add your personal API key in the CivicsHttpClient class",Date(), Division("","","")))
+                                }
+
                             }
                             override fun onFailure(call: Call<ElectionResponse>, t: Throwable) {
                                 Log.i("Download Failure", t.message.toString())
