@@ -23,7 +23,6 @@ import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.android.synthetic.main.fragment_representative.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
@@ -196,8 +195,8 @@ class DetailFragment : Fragment() {
     }
 
     private fun geoCodeLocation(location: Location): Address {
-        val geocoder = Geocoder(context, Locale.getDefault())
-        return geocoder.getFromLocation(location.latitude, location.longitude, 1)
+        val geoCoder = Geocoder(context, Locale.getDefault())
+        return geoCoder.getFromLocation(location.latitude, location.longitude, 1)
                 .map { address ->
                     Address(address.thoroughfare, address.subThoroughfare, address.locality, address.adminArea, address.postalCode)
                 }

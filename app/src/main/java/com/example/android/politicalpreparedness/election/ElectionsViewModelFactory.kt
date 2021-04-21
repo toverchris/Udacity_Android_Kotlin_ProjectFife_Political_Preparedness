@@ -13,7 +13,7 @@ class ElectionsViewModelFactory(val app: Application): ViewModelProvider.Factory
             @Suppress("UNCHECKED_CAST")
             return ElectionsViewModel(app) as T
         }
-        throw IllegalArgumentException("Unable to construct viewmodel")
+        throw IllegalArgumentException("Unable to construct ViewModel")
     }
 }
 

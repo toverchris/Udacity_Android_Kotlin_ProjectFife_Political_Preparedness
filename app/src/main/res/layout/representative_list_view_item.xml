@@ -8,7 +8,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contraintLayout"
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
@@ -20,8 +20,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:scaleType="fitCenter"
-            app:layout_constraintStart_toStartOf="@id/contraintLayout"
-            app:layout_constraintTop_toTopOf="@id/contraintLayout"
+            app:layout_constraintStart_toStartOf="@id/constraintLayout"
+            app:layout_constraintTop_toTopOf="@id/constraintLayout"
             app:profileImage="@{representative.official.photoUrl}"
             app:srcCompat="@drawable/ic_profile" />
 

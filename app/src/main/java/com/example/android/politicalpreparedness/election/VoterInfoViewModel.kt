@@ -5,10 +5,8 @@ import android.app.Application
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -48,20 +46,18 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
         get() = _savedElectionsFromDatabase
 
     init {
-        populateSavedElectionsfromDatabase()
-        populateUpcomingElectionsfromApi()
+        populateSavedElectionsFromDatabase()
     }
 
     fun getVoterInfoFromApi(division: Division, electionID: Int){
 
         coroutineScope.launch {
             try {
-                var address : String
-                when(division.state){
+                val address : String = when(division.state){
                     // update this list if some state is not know (like ga for georgia or an empty string)
-                    "" -> address = "Michigan"
-                    "ga" -> address = "georgia"
-                    else    -> address = division.state
+                    "" -> "Michigan"
+                    "ga" -> "georgia"
+                    else    -> division.state
                 }
 
                 CivicsApi.retrofitService.getVoterInfo(address, electionID)
@@ -85,11 +81,8 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
         }
     }
 
-    private fun populateUpcomingElectionsfromApi() {
-    }
-
     @InternalCoroutinesApi
-    private fun populateSavedElectionsfromDatabase() {
+    private fun populateSavedElectionsFromDatabase() {
         _savedElectionsFromDatabase.value = database.electionDao.getElectionsFromDatabase()
     }
 
@@ -103,7 +96,7 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
                 context.startActivity(intent)
             } catch (e: ActivityNotFoundException) {
                 Toast.makeText(context, "No application can handle this request."
-                        + " Please install a webbrowser", Toast.LENGTH_LONG).show()
+                        + " Please install a Webbrowser", Toast.LENGTH_LONG).show()
                 e.printStackTrace()
             }
         }
@@ -119,7 +112,7 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
                 context.startActivity(intent)
             } catch (e: ActivityNotFoundException) {
                 Toast.makeText(context, "No application can handle this request."
-                        + " Please install a webbrowser", Toast.LENGTH_LONG).show()
+                        + " Please install a Webbrowser", Toast.LENGTH_LONG).show()
                 e.printStackTrace()
             }
         }
