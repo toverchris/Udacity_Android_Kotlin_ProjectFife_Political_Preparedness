@@ -32,7 +32,6 @@ class VoterInfoFragment : Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        //TODO: Add ViewModel values and create ViewModel
         val _viewModel: VoterInfoViewModel by lazy {
             val activity = requireNotNull(this.activity) {
                 "You can only access the viewModel after onActivityCreated()"
@@ -41,20 +40,14 @@ class VoterInfoFragment : Fragment() {
                     .get(VoterInfoViewModel::class.java)
         }
 
-        //TODO: Add binding values
         val binding = FragmentVoterInfoBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = _viewModel
 
-        //TODO: Populate voter info -- hide views without provided data.
-        /**
-        Hint: You will need to ensure proper data is provided from previous fragment.
-        */
         val electionId = VoterInfoFragmentArgs.fromBundle(arguments!!).argElectionId
         val electionDivision = VoterInfoFragmentArgs.fromBundle(arguments!!).argDivision
         _viewModel.getVoterInfoFromApi(electionDivision,electionId)
 
-        //TODO: Handle loading of URLs
         _viewModel.voterInfo.observeForever {
             val infoURL = _viewModel.voterInfo.value?.state?.get(0)?.electionAdministrationBody?.electionInfoUrl
             if (infoURL.isNullOrEmpty()) binding.stateLocations.visibility = View.INVISIBLE
@@ -66,10 +59,8 @@ class VoterInfoFragment : Fragment() {
             if(_viewModel.savedElectionsFromDatabase.value!!.contains(it.election)){
                 binding.buttonFollowElection.text = _viewModel.updateButtonText("Follow election")
             }
-
         }
 
-        //TODO: Handle save button UI state
         binding.buttonFollowElection.setOnClickListener {
             if(button_followElection.text == "Follow election"){
                 _viewModel.saveToDatabase()
@@ -79,11 +70,7 @@ class VoterInfoFragment : Fragment() {
                 button_followElection.text = _viewModel.updateButtonText(button_followElection.text.toString())
             }
         }
-        //TODO: cont'd Handle save button clicks
 
         return binding.root
     }
-
-    //TODO: Create method to load URL intents
-
 }

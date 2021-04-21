@@ -20,7 +20,6 @@ class RepresentativeViewModel: ViewModel() {
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    //TODO: Establish live data for representatives and address
     private  val _representativesList = MutableLiveData<List<Representative>>()
     val representativesList: LiveData<List<Representative>>
         get() = _representativesList
@@ -30,7 +29,6 @@ class RepresentativeViewModel: ViewModel() {
         get() = _address
 
     fun getRepresentativesFromApi(address : String){
-        Log.i("Download Address", address.toString())
         coroutineScope.launch {
             try {
                 CivicsApi.retrofitService.getRepresentatives(address)
@@ -52,20 +50,6 @@ class RepresentativeViewModel: ViewModel() {
                 Log.i("Download Failure", e.message.toString())
             }
         }
-    }
-
-    //TODO: Create function get address from geo location
-    fun getAddressFromGeoLocation(): String{
-        var address: String = "georgia"
-
-        return address
-    }
-
-    //TODO: Create function to get address from individual fields
-    fun getAddressFromIndividualFields(): String{
-        var decodedAddress : String = "georgia"
-
-        return decodedAddress
     }
 
 }

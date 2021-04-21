@@ -2,26 +2,19 @@ package com.example.android.politicalpreparedness.election
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.*
-import androidx.lifecycle.Observer
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.database.ElectionDatabase
-//import com.example.android.politicalpreparedness.database.asDomainModel
-//import com.example.android.politicalpreparedness.database.asDatabaseModel
 import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.models.Division
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.ElectionResponse
-//import com.example.android.politicalpreparedness.repository.ElectionRepository
 import kotlinx.coroutines.*
-import okhttp3.Callback
-import okhttp3.Dispatcher
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 import java.util.*
-
-
-//TODO: Construct ViewModel and provide election datasource
 
 @InternalCoroutinesApi
 class ElectionsViewModel(application: Application): ViewModel() {
@@ -90,13 +83,13 @@ class ElectionsViewModel(application: Application): ViewModel() {
 
     fun getElectionsDataFromDatabase(){
         val electionList : List<Election> = database.electionDao.getElectionsFromDatabase()
-        Log.i("Database electionList", electionList.toString())
         _savedElectionsList.value = electionList
     }
 
     fun displayElection(election: Election) {
         _navigateToSelectedElection.value = election
     }
+
     fun displayElectionDetailsComplete() {
         _navigateToSelectedElection.value = null
     }

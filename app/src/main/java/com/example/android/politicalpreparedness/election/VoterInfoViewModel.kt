@@ -29,7 +29,6 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
     @SuppressLint("StaticFieldLeak")
     private val context = application.applicationContext
 
-    //TODO: Add live data to hold voter info
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
@@ -37,7 +36,6 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
     val voterInfo: LiveData<VoterInfoResponse>
         get() = _voterInfo
 
-    //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
     @InternalCoroutinesApi
     private val database = ElectionDatabase.getInstance(application.applicationContext)
 
@@ -50,7 +48,6 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
         get() = _savedElectionsFromDatabase
 
     init {
-        //getVoterInfoFromApi()
         populateSavedElectionsfromDatabase()
         populateUpcomingElectionsfromApi()
     }
@@ -96,15 +93,8 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
         _savedElectionsFromDatabase.value = database.electionDao.getElectionsFromDatabase()
     }
 
-    //TODO: Add var and methods to populate voter info
-    fun populateVoterInfo(id: Int, name: String, date: Date, division: Division){
-        //_voterInfo.value = Election(id,name,date,division)
-    }
-
-    //TODO: Add var and methods to support loading URLs
     fun loadAddressURL(){
         val loadURL = _voterInfo.value?.state?.get(0)?.electionAdministrationBody?.electionInfoUrl
-        Log.i("Load address url", loadURL.toString())
         if(!loadURL.isNullOrEmpty()){
             try {
                 val intent = Intent(Intent.ACTION_VIEW)
@@ -121,7 +111,6 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
 
     fun loadBallotInfoURL(){
         val loadURL = _voterInfo.value?.state?.get(0)?.electionAdministrationBody?.ballotInfoUrl
-        Log.i("Load ballot url", loadURL.toString())
         if(!loadURL.isNullOrEmpty()){
             try {
                 val intent = Intent(Intent.ACTION_VIEW)
@@ -136,7 +125,6 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
         }
     }
 
-    //TODO: Add var and methods to save and remove elections to local database
     @InternalCoroutinesApi
     fun saveToDatabase(){
         voterInfo.value?.let { database.electionDao.insert(it.election) }
@@ -148,10 +136,6 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
         Log.i("removed from database", _voterInfo.value!!.election.toString())
     }
 
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
-    /**
-     * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
-     */
     fun updateButtonText(value: String): String{
         if(value == "Follow election"){
             return "Unfollow election"
@@ -160,5 +144,4 @@ class VoterInfoViewModel(application: Application) : ViewModel() {
             return "Follow election"
         }
     }
-
 }

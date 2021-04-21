@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.InternalCoroutinesApi
 
-//TODO: Create Factory to generate ElectionViewModel with provided election datasource
-
 class ElectionsViewModelFactory(val app: Application): ViewModelProvider.Factory {
 
     @InternalCoroutinesApi
@@ -17,6 +15,5 @@ class ElectionsViewModelFactory(val app: Application): ViewModelProvider.Factory
         }
         throw IllegalArgumentException("Unable to construct viewmodel")
     }
-
 }
 

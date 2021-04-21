@@ -40,7 +40,7 @@ var customDateAdapter: Any = object : Any() {
 
     init {
         dateFormat = SimpleDateFormat("yyyy-MM-dd")
-        dateFormat!!.setTimeZone(TimeZone.getTimeZone("GMT"))
+        dateFormat!!.timeZone = TimeZone.getTimeZone("GMT")
     }
 }
 private val moshi = Moshi.Builder()

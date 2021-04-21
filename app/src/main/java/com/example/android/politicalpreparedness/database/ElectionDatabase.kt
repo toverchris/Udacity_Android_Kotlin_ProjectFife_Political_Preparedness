@@ -32,14 +32,10 @@ abstract class ElectionDatabase: RoomDatabase() {
                             .allowMainThreadQueries()               // TODO: 4/15/21 That has to be gone due to bad programming on the main threat. Just for help now 
                             .fallbackToDestructiveMigration()
                             .build()
-
                     INSTANCE = instance
                 }
-
                 return instance
             }
         }
-
     }
-
 }

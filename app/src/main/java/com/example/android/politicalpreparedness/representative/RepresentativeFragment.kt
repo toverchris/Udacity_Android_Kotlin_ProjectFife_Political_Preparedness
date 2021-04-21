@@ -56,7 +56,6 @@ class DetailFragment : Fragment() {
 
         initSpinner()
 
-        //TODO: Define and assign Representative adapter
         binding.recyclerViewRepresentatives.adapter = RepresentativeListAdapter()
 
         if (savedInstanceState != null) {
@@ -171,7 +170,6 @@ class DetailFragment : Fragment() {
                     if (userLocation != null) {
                         hideKeyboard()
                         val address : Address  = geoCodeLocation(userLocation!!)
-                        Log.i("representatives Address", address.toString())
                         updateInputFields(address)
                     }else {
                         Toast.makeText(context, "Can not get your location. Using default location", Toast.LENGTH_SHORT).show()
